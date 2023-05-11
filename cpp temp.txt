@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp>
+#include <functional> // for less
+
+
+
+#define FOR(i,n)          for(int i=0;i<n;i++)
+#define FOR1(i,n)         for(int i=1;i<=n;i++)
+#define MAXN              10000000
+#define ll                long long int
+#define all(c)            (c).begin(),(c).end()
+#define srt(c)            sort(all(c))
+#define srtrev(c)         sort(all(c)); reverse(all(c))
+#define pb                push_back
+#define eb                emplace_back
+#define mp                make_pair
+#define vll               vector< pair<ll,ll> >
+#define pii               pair<int,int>
+#define vpii              vector< pii >
+#define pll               pair<ll,ll>
+#define vl                vector<ll>
+#define F                 first
+#define S                 second
+#define vvl               vector< vector<ll> >
+#define vi                vector<int>
+#define sz(s)             s.size()
+#define MEM(Arr)         memset((Arr), 0, sizeof (Arr))
+#define make_unique(x)    sort(all((x))); (x).resize(unique(all((x))) - (x).begin())
+
+
+/*const int dx[] = {-1, 0, 1,  0};
+const int dy[] = { 0, 1, 0, -1};
+const int dxK[] = {-1, -1, 0, 1, 1,  1,  0, -1};
+const int dyK[] = { 0,  1, 1, 1, 0, -1, -1, -1};
+const int dxKn[] = {-2, -1, 1, 2,  2,  1, -1, -2};
+const int dyKn[] = { 1,  2, 2, 1, -1, -2, -2, -1};*/
+const long long mod = 1000000007;
+const char nl= '\n';
+
+
+
+
+using namespace std;
+using namespace __gnu_pbds;
+
+
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+
+
+typedef tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset;
+ 
+
+
+void solve( int Case )
+{
+    
+}
+signed main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);cout.tie(0);
+    int t;cin>>t;
+    int Case = 0;
+    while(t--)solve(++Case);
+
+}
+
+
+

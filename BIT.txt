@@ -1,0 +1,45 @@
+int lowbit(int x)
+{
+    return x&-x;
+}
+int query(int x,int tr[])
+{
+    int res = 0;
+    for (int i=x; i; i-=lowbit(i)) res+=tr[i];
+    return res;
+}
+void add(int x,int tr[],int c)
+{
+    for (int i=x; i<=n; i+=lowbit(i)) tr[i] += c;
+}
+///////////
+
+
+template <typename T>
+struct binary_indexed_tree{
+  int N;
+  vector<T> BIT;
+  binary_indexed_tree(int N): N(N), BIT(N + 1, 0){
+  }
+  void add(int i, T x){
+    //i++;
+    while (i <= N){
+      BIT[i] += x;
+      i += i & -i;
+    }
+  }
+  T sum(int i){
+    T ans = 0;
+    while (i > 0){
+      ans += BIT[i];
+      i -= i & -i;
+    }
+    return ans;
+  }
+  T sum(int L, int R){
+    return sum(R) - sum(L);
+  }
+};
+//call with like binary_indexed_tree<int>bit(n);
+//bit.sum(l-1,r); 
+//bit.add(a,1);

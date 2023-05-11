@@ -1,0 +1,117 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+const int N = 1e4 + 5, b = 31, b2 = 37, mod = 1e9 + 7;
+
+int n, pw[N], pw2[N], inv[N], inv2[N], pref[N], pref2[N], dp[N];
+string s;
+
+int add(int a, int b){
+    return (a + b) % mod;
+}
+
+ll mul(int a, int b){
+    return 1ll * a * b % mod;
+}
+
+int fp(int b, int p){
+    if(p == 0) return 1;
+    int ret = fp(b, p >> 1);
+    ret = 1ll * ret * ret % mod;
+    if(p & 1) ret = 1ll * ret * b % mod;
+    return ret;
+}
+
+void pre(){
+    pw[0] = pw2[0] = inv[0] = inv2[0] = 1;
+    for(int i = 1; i < N; i++){
+        pw[i] = 1ll * pw[i - 1] * b % mod;
+        pw2[i] = 1ll * pw2[i - 1] * b2 % mod;
+        inv[i] = fp(pw[i], mod - 2);
+        inv2[i] = fp(pw2[i], mod - 2);
+    }
+}
+
+pair<int, int> get_hash(int from, int to){
+    int ret = pref[to];
+    if(from) ret = (ret - pref[from - 1] + mod) % mod;
+    ret = mul(ret, inv[from]);
+
+    int ret2 = pref2[to];
+    if(from) ret2 = (ret2 - pref2[from - 1] + mod) % mod;
+    ret2 = mul(ret2, inv2[from]);
+
+    return {ret, ret2};
+}
+
+map< pair<int, int>, string> mp;
+
+int solve(int idx){
+    if(idx == n){
+        return 1;
+    }
+    if(dp[idx] != -1) return dp[idx];
+    int ans = 0;
+    for(int i = idx; i < min(idx + 1000, n); i++){
+        if(mp.find(get_hash(idx, i)) != mp.end()){
+            ans |= solve(i + 1);
+        }
+    }
+    return dp[idx] = ans;
+}
+
+vector<string> ans;
+
+void build(int idx){
+    if(idx == n){
+        return;
+    }
+    for(int i = idx; i < min(idx + 1000, n); i++){
+        if(mp.find(get_hash(idx, i)) != mp.end() && solve(i + 1)){
+            ans.push_back(mp[get_hash(idx, i)]);
+            // cout << mp[get_hash(idx, i)] << ' ';
+            build(i + 1);
+            break;
+        }
+    }
+    return;
+
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    pre();
+    cin >> n >> s;
+    reverse(s.begin(), s.end());
+    pref[0] = pref2[0] = s[0] - 'a' + 1;
+    for(int i = 1; i < n; i++){
+        pref[i] = add(pref[i - 1], 1ll * pw[i] * (s[i] - 'a' + 1) % mod);
+        pref2[i] = add(pref2[i - 1], 1ll * pw2[i] * (s[i] - 'a' + 1) % mod);
+    }
+    int m;
+    cin >> m;
+    while(m--){
+        string ss;
+        cin >> ss;
+        string tmp = ss;
+        for(int i = 0; i < ss.size(); i++){
+            if(tmp[i] >= 'A' && tmp[i] <= 'Z'){
+                tmp[i] = tmp[i] - 'A' + 'a';
+            }
+        }
+        int x = ss.size();
+        int val1 = 0, val2 = 0;
+        for(int i = 0; i < x; i++){
+            val1 = add(val1, 1ll * pw[i] * (tmp[i] - 'a' + 1) % mod);
+            val2 = add(val2, 1ll * pw2[i] * (tmp[i] - 'a' + 1) % mod);
+        }
+        mp[{val1, val2}] = ss;
+    }
+    memset(dp, -1, sizeof dp);
+    solve(0);
+    build(0);
+    reverse(ans.begin(), ans.end());
+    for(auto i: ans) cout << i << ' ';
+
+    return 0;
+}

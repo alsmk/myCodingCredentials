@@ -1,0 +1,22 @@
+constexpr int L = 9; //log2 value of maxN 
+struct SparseTable{
+	int n ;
+	vector< array<int,L> > st;
+	SparseTable(vector<int>&v){
+		int n = sz(v);
+		st.resize(n+1);
+		FOR(i,n)st[i][0] = v[i];
+		st[n][0] = 0;
+		for(int l = 0;l<L-1;l++){
+			FOR(i,n){
+				st[i][l+1]=max(st[i][l],st[min(n,i+(1<<l))][l]);
+			}
+		}
+	}
+	int query(int l,int r){   //r is upped
+		if(l>=r)return 0; 
+		int x = __lg(r-l); 
+		return max(st[l][x],st[r-(1<<x)][x]);
+	}
+
+};
